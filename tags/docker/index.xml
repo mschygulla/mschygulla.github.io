@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Docker on Martin Schygulla&#39;s Blog</title>
-    <link>http://mschygulla.github.io/tags/docker/</link>
+    <link>https://mschygulla.github.io/tags/docker/</link>
     <description>Recent content in Docker on Martin Schygulla&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 19 May 2016 13:43:03 +0200</lastBuildDate>
-    <atom:link href="http://mschygulla.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://mschygulla.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Docker for Mac behind a proxy</title>
-      <link>http://mschygulla.github.io/post/docker-for-mac-behind-a-proxy/</link>
+      <link>https://mschygulla.github.io/post/docker-for-mac-behind-a-proxy/</link>
       <pubDate>Thu, 19 May 2016 13:43:03 +0200</pubDate>
       
-      <guid>http://mschygulla.github.io/post/docker-for-mac-behind-a-proxy/</guid>
+      <guid>https://mschygulla.github.io/post/docker-for-mac-behind-a-proxy/</guid>
       <description>&lt;p&gt;Recently I got an invite for the private Beta program for Docker for Mac and Docker for Windows. I started to play around with the Docker for Mac application but ran quite quickly into a known limitation. I was not able to pull docker images from the Docker Registry since my network uses a HTTP proxy to access Internet sites. Unfortunately, with the current beta versions it is not possible to configure proxy settings for the Docker Engine.&lt;/p&gt;
 
 &lt;p&gt;I spend some time to understand how the Docker for Mac application works and found a workaround. This workaround is hopefully not needed as soon as the proxy settings support is build into the Docker for Mac application.&lt;/p&gt;

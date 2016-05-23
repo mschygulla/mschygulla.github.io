@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sublime on Martin Schygulla&#39;s Blog</title>
-    <link>http://mschygulla.github.io/tags/sublime/</link>
+    <link>https://mschygulla.github.io/tags/sublime/</link>
     <description>Recent content in Sublime on Martin Schygulla&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 20 May 2016 16:16:52 +0200</lastBuildDate>
-    <atom:link href="http://mschygulla.github.io/tags/sublime/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://mschygulla.github.io/tags/sublime/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Chef completions for Sublime Text</title>
-      <link>http://mschygulla.github.io/post/chef-completions-for-sublime/</link>
+      <link>https://mschygulla.github.io/post/chef-completions-for-sublime/</link>
       <pubDate>Fri, 20 May 2016 16:16:52 +0200</pubDate>
       
-      <guid>http://mschygulla.github.io/post/chef-completions-for-sublime/</guid>
+      <guid>https://mschygulla.github.io/post/chef-completions-for-sublime/</guid>
       <description>
 
 &lt;p&gt;Today I release my Sublime Text Package for authoring Chef &lt;a href=&#34;https://docs.chef.io/resources.html&#34;&gt;Cookbooks&lt;/a&gt; and &lt;a href=&#34;https://docs.chef.io/inspec_reference.html&#34;&gt;InSpec&lt;/a&gt; files.&lt;/p&gt;
@@ -30,7 +30,7 @@
 
 &lt;h3 id=&#34;demo&#34;&gt;Demo&lt;/h3&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://mschygulla.github.io/demo.gif&#34; alt=&#34;demo&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://mschygulla.github.io/demo.gif&#34; alt=&#34;demo&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Have fun !&lt;/p&gt;
 </description>
