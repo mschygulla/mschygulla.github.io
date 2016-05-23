@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sublime on Martin Schygulla&#39;s Blog</title>
+    <link>http://mschygulla.github.io/tags/sublime/</link>
+    <description>Recent content in Sublime on Martin Schygulla&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 20 May 2016 16:16:52 +0200</lastBuildDate>
+    <atom:link href="http://mschygulla.github.io/tags/sublime/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Chef completions for Sublime Text</title>
+      <link>http://mschygulla.github.io/post/chef-completions-for-sublime/</link>
+      <pubDate>Fri, 20 May 2016 16:16:52 +0200</pubDate>
+      
+      <guid>http://mschygulla.github.io/post/chef-completions-for-sublime/</guid>
+      <description>
+
+&lt;p&gt;Today I release my Sublime Text Package for authoring Chef &lt;a href=&#34;https://docs.chef.io/resources.html&#34;&gt;Cookbooks&lt;/a&gt; and &lt;a href=&#34;https://docs.chef.io/inspec_reference.html&#34;&gt;InSpec&lt;/a&gt; files.&lt;/p&gt;
+
+&lt;p&gt;This package is based on &lt;a href=&#34;https://github.com/brianhays/SublimeChef&#34;&gt;SublimeChef&lt;/a&gt;, but has been updated to Chef v12.x Cookbook resources and extended to support Chef InSpec.&lt;/p&gt;
+
+&lt;h3 id=&#34;install&#34;&gt;Install&lt;/h3&gt;
+
+&lt;p&gt;You can install this package by entering the Packages directory of Sublime Text (on OSX this would normally be &lt;code&gt;~/Library/Application\ Support/Sublime\ Text\ 3/Packages/&lt;/code&gt;) and issuing on a terminal:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone https://github.com/mschygulla/SublimeChefDK
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;demo&#34;&gt;Demo&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://mschygulla.github.io/demo.gif&#34; alt=&#34;demo&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Have fun !&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

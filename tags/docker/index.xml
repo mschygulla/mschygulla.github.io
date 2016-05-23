@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on Martin Schygulla&#39;s Blog</title>
+    <link>http://mschygulla.github.io/tags/docker/</link>
+    <description>Recent content in Docker on Martin Schygulla&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 19 May 2016 13:43:03 +0200</lastBuildDate>
+    <atom:link href="http://mschygulla.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Docker for Mac behind a proxy</title>
+      <link>http://mschygulla.github.io/post/docker-for-mac-behind-a-proxy/</link>
+      <pubDate>Thu, 19 May 2016 13:43:03 +0200</pubDate>
+      
+      <guid>http://mschygulla.github.io/post/docker-for-mac-behind-a-proxy/</guid>
+      <description>&lt;p&gt;Recently I got an invite for the private Beta program for Docker for Mac and Docker for Windows. I started to play around with the Docker for Mac application but ran quite quickly into a known limitation. I was not able to pull docker images from the Docker Registry since my network uses a HTTP proxy to access Internet sites. Unfortunately, with the current beta versions it is not possible to configure proxy settings for the Docker Engine.&lt;/p&gt;
+
+&lt;p&gt;I spend some time to understand how the Docker for Mac application works and found a workaround. This workaround is hopefully not needed as soon as the proxy settings support is build into the Docker for Mac application.&lt;/p&gt;
+
+&lt;p&gt;As described in the official documentation the Docker for Mac application runs the Docker Engine on an &lt;a href=&#34;http://www.alpinelinux.org&#34;&gt;Alpine Linux&lt;/a&gt; distribution inside a Virtual Machine (VM) using the &lt;a href=&#34;https://github.com/mist64/xhyve/&#34;&gt;xhyve&lt;/a&gt; hypervisor.&lt;/p&gt;
+
+&lt;p&gt;You can access the Linux machine with user &lt;code&gt;root&lt;/code&gt; and no password after entering in OSX Terminal:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the init script for the Docker Engine, located at &lt;code&gt;/etc/init.d/docker&lt;/code&gt;, I&amp;rsquo;ve added my proxy settings (see the code snippet below).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/sbin/openrc-run
+
+export http_proxy=http://proxy:8080
+export https_proxy=http://proxy:8080
+export no_proxy=localhost,127.0.0.1
+
+depend()
+{
+  after transfused
+  before chronyd
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After adding the proxy settings the Docker Engine must be restarted:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;/etc/init.d/docker stop
+/etc/init.d/docker start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To detach from the screen session enter &lt;code&gt;control-a d&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Back in the OSX Terminal I&amp;rsquo;m now able to pull images from the Docker Registry with the usual command, e.g.:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker pull ubuntu
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This workaround works well until you quit the Docker for Mac application. After starting the application again you&amp;rsquo;ll notice that the previous made settings are lost, since the changes are not permanent.&lt;/p&gt;
+
+&lt;p&gt;To make the proxy settings permanent and survive a Docker for Mac application restart it requires some additional steps.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&#34;https://github.com/mist64/xhyve/&#34;&gt;xhyve&lt;/a&gt; hypervisor requires two files to start a Virtual Machine (VM) with &lt;a href=&#34;http://www.alpinelinux.org&#34;&gt;Alpine Linux&lt;/a&gt;. In the folder &lt;code&gt;/Applications/Docker.app/Contents/Resources/moby/&lt;/code&gt; you can find the files &lt;code&gt;vmlinuz64&lt;/code&gt; which is the Linux kernel and &lt;code&gt;initrd.img&lt;/code&gt; with the root file system. To make our proxy settings permanent we need to modify the &lt;code&gt;initrd.img&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Important&lt;/strong&gt;: Before you begin to modify the root file system create a backup of the &lt;code&gt;initrd.img&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cp /Applications/Docker.app/Contents/Resources/moby/initrd.img /Applications/Docker.app/Contents/Resources/moby/initrd.img-backup
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Access the Linux machine with user &lt;code&gt;root&lt;/code&gt; and no password after entering in OSX Terminal:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next step is to copy the root file system into the Virtual Machine and extract it into a temp folder:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;mkdir /temp &amp;amp;&amp;amp; cd /temp
+cp /Mac/Applications/Docker.app/Contents/Resources/moby/initrd.img-backup /initrd.img-backup.gz
+gunzip /initrd.img-backup.gz
+cpio -id &amp;lt; /initrd.img-backup
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now edit the init script located in the temp folder at &lt;code&gt;/temp/etc/init.d/docker&lt;/code&gt; as described above with your proxy settings. As last step we need to recreate and compress the new file system:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cd /temp
+find . | cpio --create --format=&#39;newc&#39; &amp;gt; /initrd.img
+gzip /initrd.img
+mv /initrd.img.gz /Mac/Applications/Docker.app/Contents/Resources/moby/initrd.img
+cd / &amp;amp;&amp;amp; rm -rf /temp &amp;amp;&amp;amp; rm -f /initrd.img-backup
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After making the changes you can detach from the screen session (&lt;code&gt;control-a d&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;Restart the Docker for Mac application and test your proxy settings.&lt;/p&gt;
+
+&lt;p&gt;As a last note please be aware that these permanent changes are lost as soon as the Docker for Mac application gets an update.&lt;/p&gt;
+
+&lt;p&gt;Have fun!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

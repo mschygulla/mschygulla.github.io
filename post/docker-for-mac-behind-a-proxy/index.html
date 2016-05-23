@@ -1,0 +1,148 @@
+	<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.16-DEV" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title> Martin Schygulla&#39;s Blog &middot; Docker for Mac behind a proxy </title>
+
+  
+  <link rel="stylesheet" href="/css/poole.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+  <link rel="stylesheet" href="/css/hyde.css">
+  <link rel="stylesheet" href="/css/prism.css">
+  <link rel="stylesheet" href="/css/blog.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+  
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Martin Schygulla&#39;s Blog" />
+</head>
+
+	<body class="">
+		<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="http://mschygulla.github.io/"><h1>Martin Schygulla</h1></a>
+      <p class="lead">
+      Blog about thoughts, stories and ideas.
+      </p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li> <br></li>
+      
+    </ul>
+    <ul class="sidebar-nav">
+    <li class="sidebar-nav-item">
+    <a href="https://github.com/mschygulla"><i class="fa fa-github-square fa-2x"></i></a>
+    <a href="https://linkedin.com/in/schygulla"><i class="fa fa-linkedin-square fa-2x"></i></a>
+    
+    <a href="http://twitter.com/maschygulla"><i class="fa fa-twitter-square fa-2x"></i></a>
+    <a href="/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-2x"></i></a>
+    </li>
+    </ul>
+    <p>&copy; 2016. All rights reserved. </p>
+  </div>
+</div>
+
+
+		<div class="content container">
+			<div class="post">
+			 	<h1>Docker for Mac behind a proxy</h1>
+			  <span class="post-date">May 19, 2016</span>
+			      <p>Recently I got an invite for the private Beta program for Docker for Mac and Docker for Windows. I started to play around with the Docker for Mac application but ran quite quickly into a known limitation. I was not able to pull docker images from the Docker Registry since my network uses a HTTP proxy to access Internet sites. Unfortunately, with the current beta versions it is not possible to configure proxy settings for the Docker Engine.</p>
+
+<p>I spend some time to understand how the Docker for Mac application works and found a workaround. This workaround is hopefully not needed as soon as the proxy settings support is build into the Docker for Mac application.</p>
+
+<p>As described in the official documentation the Docker for Mac application runs the Docker Engine on an <a href="http://www.alpinelinux.org">Alpine Linux</a> distribution inside a Virtual Machine (VM) using the <a href="https://github.com/mist64/xhyve/">xhyve</a> hypervisor.</p>
+
+<p>You can access the Linux machine with user <code>root</code> and no password after entering in OSX Terminal:</p>
+
+<pre><code class="language-bash">screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty
+</code></pre>
+
+<p>In the init script for the Docker Engine, located at <code>/etc/init.d/docker</code>, I&rsquo;ve added my proxy settings (see the code snippet below).</p>
+
+<pre><code class="language-bash">#!/sbin/openrc-run
+
+export http_proxy=http://proxy:8080
+export https_proxy=http://proxy:8080
+export no_proxy=localhost,127.0.0.1
+
+depend()
+{
+  after transfused
+  before chronyd
+}
+</code></pre>
+
+<p>After adding the proxy settings the Docker Engine must be restarted:</p>
+
+<pre><code class="language-bash">/etc/init.d/docker stop
+/etc/init.d/docker start
+</code></pre>
+
+<p>To detach from the screen session enter <code>control-a d</code>.</p>
+
+<p>Back in the OSX Terminal I&rsquo;m now able to pull images from the Docker Registry with the usual command, e.g.:</p>
+
+<pre><code class="language-bash">docker pull ubuntu
+</code></pre>
+
+<p>This workaround works well until you quit the Docker for Mac application. After starting the application again you&rsquo;ll notice that the previous made settings are lost, since the changes are not permanent.</p>
+
+<p>To make the proxy settings permanent and survive a Docker for Mac application restart it requires some additional steps.</p>
+
+<p>The <a href="https://github.com/mist64/xhyve/">xhyve</a> hypervisor requires two files to start a Virtual Machine (VM) with <a href="http://www.alpinelinux.org">Alpine Linux</a>. In the folder <code>/Applications/Docker.app/Contents/Resources/moby/</code> you can find the files <code>vmlinuz64</code> which is the Linux kernel and <code>initrd.img</code> with the root file system. To make our proxy settings permanent we need to modify the <code>initrd.img</code> file.</p>
+
+<p><strong>Important</strong>: Before you begin to modify the root file system create a backup of the <code>initrd.img</code> file:</p>
+
+<pre><code class="language-bash">cp /Applications/Docker.app/Contents/Resources/moby/initrd.img /Applications/Docker.app/Contents/Resources/moby/initrd.img-backup
+</code></pre>
+
+<p>Access the Linux machine with user <code>root</code> and no password after entering in OSX Terminal:</p>
+
+<pre><code class="language-bash">screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty
+</code></pre>
+
+<p>Next step is to copy the root file system into the Virtual Machine and extract it into a temp folder:</p>
+
+<pre><code class="language-bash">mkdir /temp &amp;&amp; cd /temp
+cp /Mac/Applications/Docker.app/Contents/Resources/moby/initrd.img-backup /initrd.img-backup.gz
+gunzip /initrd.img-backup.gz
+cpio -id &lt; /initrd.img-backup
+</code></pre>
+
+<p>Now edit the init script located in the temp folder at <code>/temp/etc/init.d/docker</code> as described above with your proxy settings. As last step we need to recreate and compress the new file system:</p>
+
+<pre><code class="language-bash">cd /temp
+find . | cpio --create --format='newc' &gt; /initrd.img
+gzip /initrd.img
+mv /initrd.img.gz /Mac/Applications/Docker.app/Contents/Resources/moby/initrd.img
+cd / &amp;&amp; rm -rf /temp &amp;&amp; rm -f /initrd.img-backup
+</code></pre>
+
+<p>After making the changes you can detach from the screen session (<code>control-a d</code>).</p>
+
+<p>Restart the Docker for Mac application and test your proxy settings.</p>
+
+<p>As a last note please be aware that these permanent changes are lost as soon as the Docker for Mac application gets an update.</p>
+
+<p>Have fun!</p>
+
+			</div>
+
+			
+		</div>
+
+		<script src="/js/prism.js"></script>
+  </body>
+</html>
