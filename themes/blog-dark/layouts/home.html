@@ -1,0 +1,32 @@
+{{ define "main" }}
+<div class="profile">
+  {{- with site.Params.avatar }}
+  <img class="profile-avatar" src="{{ . }}" alt="{{ site.Title }}" width="96" height="96">
+  {{- end }}
+  <div class="profile-content">
+    <h1 class="profile-title">{{ or site.Params.welcomeTitle "Welcome" }}</h1>
+    {{- with .Content }}
+    <div class="profile-bio">{{ . }}</div>
+    {{- end }}
+    {{ partial "social.html" . }}
+  </div>
+</div>
+<div class="posts-section">
+  <span class="section-label">Posts</span>
+  <div class="post-list">
+    {{- range (where site.RegularPages "Section" "posts").ByDate.Reverse }}
+    <article class="post-card">
+      <div class="post-meta">
+        <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02, 2006" }}</time>
+        {{- with .Params.tags }}
+        <span class="post-tags">{{- range . }}<span class="tag">{{ . }}</span>{{ end }}</span>
+        {{- end }}
+      </div>
+      <h2 class="post-title"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+      {{- with .Summary }}<p class="post-summary">{{ . }}</p>{{- end }}
+      <a href="{{ .RelPermalink }}" class="read-more">Read more &rarr;</a>
+    </article>
+    {{- end }}
+  </div>
+</div>
+{{ end }}

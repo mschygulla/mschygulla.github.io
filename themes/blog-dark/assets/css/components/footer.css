@@ -1,0 +1,36 @@
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding: 1.75rem 0;
+}
+
+.footer-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.footer-copy {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+/* Social icons — used in profile section and elsewhere */
+
+.social-links {
+  display: flex;
+  gap: 0.875rem;
+  align-items: center;
+}
+
+.social-link {
+  color: var(--color-text-muted);
+  transition: color 0.15s;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  color: var(--color-text);
+  text-decoration: none;
+}

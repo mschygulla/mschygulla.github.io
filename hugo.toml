@@ -1,0 +1,32 @@
+baseURL = 'https://mschygulla.github.io/'
+locale = 'en-us'
+title = "Martin's Blog"
+theme = 'blog-dark'
+
+[params]
+  welcomeTitle = "Welcome"
+  avatar   = '/images/avatar.jpg'
+  github   = 'https://github.com/mschygulla'
+  twitter  = 'https://x.com/maschygulla'
+  linkedin = 'https://linkedin.com/in/schygulla'
+
+[menus]
+  [[menus.main]]
+    name = 'Home'
+    pageRef = '/'
+    weight = 10
+
+  [[menus.main]]
+    name = 'Posts'
+    pageRef = '/posts'
+    weight = 20
+
+  [[menus.main]]
+    name = 'Tags'
+    pageRef = '/tags'
+    weight = 30
+
+  [[menus.main]]
+    name = 'About'
+    pageRef = '/about'
+    weight = 40

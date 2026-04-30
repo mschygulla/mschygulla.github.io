@@ -1,0 +1,232 @@
+/* Profile / welcome section */
+
+.profile {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.75rem;
+  padding: 2.5rem 0 2.25rem;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 2.5rem;
+}
+
+.profile-avatar {
+  flex-shrink: 0;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-border);
+}
+
+.profile-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+}
+
+.profile-bio {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+
+.profile-bio p:last-child {
+  margin-bottom: 0;
+}
+
+.profile .social-links {
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 520px) {
+  .profile {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+}
+
+/* Posts section heading */
+
+.posts-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.read-more {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.625rem;
+  text-decoration: none;
+}
+
+.read-more:hover {
+  text-decoration: underline;
+}
+
+/* Post list (home / section pages) */
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-intro {
+  color: var(--color-text-muted);
+  font-size: 1.0625rem;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card {
+  padding: 1.75rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.post-card:last-child {
+  border-bottom: none;
+}
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.post-date {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.post-tags {
+  display: inline-flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: var(--color-tag-bg);
+  border-radius: 20px;
+  color: var(--color-tag-text);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.1em 0.65em;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+a.tag:hover {
+  background: var(--color-accent);
+  color: #0d1117;
+  text-decoration: none;
+}
+
+.post-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5rem;
+  line-height: 1.4;
+}
+
+.post-title a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.post-title a:hover {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.post-summary {
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Single post */
+
+.post-article {
+  max-width: 100%;
+}
+
+.post-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.post-header .post-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.03em;
+}
+
+.post-header .post-meta {
+  margin-bottom: 0;
+}
+
+.post-content {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+.post-footer {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Taxonomy terms */
+
+.post-terms {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.post-terms-label {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.post-terms-list {
+  display: inline-flex;
+  gap: 0.375rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.post-terms-list li {
+  margin: 0;
+}
